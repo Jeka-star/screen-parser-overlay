@@ -1,7 +1,6 @@
-import cv2
 import pytesseract
 import tkinter as tk
-from PIL import ImageGrab, ImageDraw, ImageFont
+from PIL import ImageGrab
 import threading
 import time
 
@@ -51,15 +50,8 @@ class ScreenParserOverlay:
                 # Захватываем область экрана
                 screenshot = ImageGrab.grab(bbox=REGION_1)
                 
-                # Конвертируем в OpenCV формат
-                img = cv2.cvtColor(cv2.numpy.asarray(screenshot), cv2.COLOR_RGB2BGR)
-                
-                # Улучшаем контрастность для лучшего OCR
-                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                _, thresh = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
-                
                 # Читаем текст с помощью Tesseract
-                text = pytesseract.image_to_string(thresh).strip()
+                text = pytesseract.image_to_string(screenshot).strip()
                 
                 if text and text != self.current_value:
                     self.current_value = text
